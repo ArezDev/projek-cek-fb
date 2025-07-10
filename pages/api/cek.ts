@@ -6,12 +6,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method === 'POST') {
       const { user } = req.body;
       const response = await axios.get(`https://graph.facebook.com/${user}/picture?type=normal`);
-      return res.status(200).json({ status: true, message: 'Akun hidup!', data: response.statusText });
+      return res.status(200).json({ status: true, message: 'Akun hidup!', data: response.request.res.responseUrl });
     }
     res.setHeader('Allow', ['POST']);
     return res.status(405).end(`Method ${req.method} Not Allowed`);
   } catch (error) {
-    console.error('Database error:', error);
-    return res.status(500).json({ error: 'Gagal mengakses database' });
+    console.error('Akses ditolak:', error);
+    return res.status(500).json({ error: 'Gagal mengakses data!' });
   }
 }
